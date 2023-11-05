@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Worker;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class WorkerController extends Controller
 {
@@ -19,7 +24,7 @@ class WorkerController extends Controller
      */
     public function create()
     {
-        //
+        return view('workers.create');
     }
 
     /**
@@ -27,7 +32,18 @@ class WorkerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+        $worker = Worker::create([
+            'user_id' => $user->id,
+            'workshop_id' => Auth::user()->workshop->id,
+        ]);
+        $role = Role::where('name', 'Worker')->first();
+        $user->roles()->attach($role->id);
+        return redirect()->route('home');
     }
 
     /**

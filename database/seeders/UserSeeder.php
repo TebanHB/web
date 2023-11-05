@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Client;
 use App\Models\User;
+use App\Models\Worker;
+use App\Models\Workshop;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -23,6 +26,7 @@ class UserSeeder extends Seeder
             'email' => 'user@user.com',
             'password' => Hash::make('1234'),
         ]);
+
         $workshopUser = User::create([
             'name' => 'Workshop User',
             'email' => 'workshop@workshop.com',

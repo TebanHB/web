@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Workshop;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class WorkshopController extends Controller
 {
@@ -19,7 +24,7 @@ class WorkshopController extends Controller
      */
     public function create()
     {
-        //
+        return view('workshops.create');
     }
 
     /**
@@ -27,7 +32,18 @@ class WorkshopController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+        Auth::login($user);
+        $workshop = Workshop::create([
+            'user_id' => $user->id,
+        ]);
+        $role = Role::where('name', 'Workshop')->first();
+        $user->roles()->attach($role->id);
+        return redirect()->route('myprofile');
     }
 
     /**
