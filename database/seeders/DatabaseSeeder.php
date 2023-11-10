@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             ClientsTableSeeder::class,
+            ServiceRequestSeeder::class,
             // add other seeders here...
         ]);
     }

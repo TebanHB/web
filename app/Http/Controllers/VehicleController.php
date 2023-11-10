@@ -55,6 +55,7 @@ class VehicleController extends Controller
                 Photo::create([
                     'vehicle_id' => $vehicle->id,
                     'file_path' => $path,
+                    'service_request_id' => null,
                 ]);
             }
         }

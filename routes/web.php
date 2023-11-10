@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\PropositionController;
+use App\Http\Controllers\ServiceRequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\WorkerController;
@@ -67,6 +69,24 @@ Route::middleware(['auth'])->group(function () {
         'edit' => 'workshops.edit',
         'update' => 'workshops.update',
         'destroy' => 'workshops.destroy',
+    ]);
+    Route::resource('service_requests', ServiceRequestController::class)->names([
+        'index' => 'service_requests.index',
+        'create' => 'service_requests.create',
+        'store' => 'service_requests.store',
+        'show' => 'service_requests.show',
+        'edit' => 'service_requests.edit',
+        'update' => 'service_requests.update',
+        'destroy' => 'service_requests.destroy',
+    ]);
+    Route::resource('propositions', PropositionController::class)->names([
+        'index' => 'propositions.index',
+        'create' => 'propositions.create',
+        'store' => 'propositions.store',
+        'show' => 'propositions.show',
+        'edit' => 'propositions.edit',
+        'update' => 'propositions.update',
+        'destroy' => 'propositions.destroy',
     ]);
     Route::get('/vehicles/{vehicle}/photos', [VehicleController::class, 'photos'])->name('vehicles.photos');
     Route::get('/myprofile', [UserController::class, 'profile'])->name('myprofile');

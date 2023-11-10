@@ -13,9 +13,12 @@ class Workshop extends Model
     {
         return $this->belongsTo(User::class);
     }
-
     public function workers()
     {
         return $this->hasMany(Worker::class);
+    }
+    public function propositions()
+    {
+        return $this->hasMany(Proposition::class);
     }
 }

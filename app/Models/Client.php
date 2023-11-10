@@ -19,4 +19,8 @@ class Client extends Model
     {
         return $this->hasMany(Vehicle::class);
     }
+    public function serviceRequests()
+    {
+        return $this->hasMany(ServiceRequest::class);
+    }
 }
