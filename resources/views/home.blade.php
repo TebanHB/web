@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    Hola {{session('message')}}
+    {{session('message')}}
     @if (session('message'))
     <div class="alert alert-success">
         {{ session('message') }}
