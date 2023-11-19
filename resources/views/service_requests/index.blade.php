@@ -3,6 +3,9 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLiZOnEOdbn1pP9n96DFUzT1WUXszhDP8&callback=initMap"></script>
 @section('content')
     <div class="container">
+        <div id="overlay"
+            style="display: none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); z-index: 2; cursor: pointer;">
+        </div>
         <h2>All Service Requests</h2>
         <table class="table">
             <thead>
@@ -21,8 +24,7 @@
                                 Show Photos
                             </a>
                             <br><br>
-                            <a href="#" class="btn btn-primary" data-toggle="modal"
-                                data-target="#photosModal{{ $serviceRequest->id }}">
+                            <a href="javascript:void(0);" onclick="window.open('{{ route('propositions.create2', ['id' => $serviceRequest->id]) }}', 'newwindow', 'width=300,height=250');" class="btn btn-primary">
                                 Make a offer
                             </a>
                         </td>
@@ -61,7 +63,6 @@
                         });
                     });
                 }
-
                 @foreach ($serviceRequests as $serviceRequest)
                     @php
                         $parts = explode(',', $serviceRequest->location);
@@ -79,12 +80,18 @@
                         title: "ID: {{ $serviceRequest->id }}",
                     });
                     marker.addListener('click', function() {
-                        var a = document.createElement('a');
-                        a.href = 'https://music.youtube.com/watch?v=yIQcsvKnxqw&list=RDCLAK5uy_kPqJ_FiGk-lbXtgM4IF42uokskSJZiVTI';
-                        a.target = '_blank';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
+                        var url = '{{ route('propositions.create2', ['id' => $serviceRequest->id]) }}';
+                        var newWindow = window.open(
+                            url, 'newwindow',
+                            'width=300,height=250');
+                        document.getElementById('overlay').style.display = 'block';
+
+                        var timer = setInterval(function() {
+                            if (newWindow.closed) {
+                                clearInterval(timer);
+                                document.getElementById('overlay').style.display = 'none';
+                            }
+                        }, 500);
                     });
                     marker.setMap(map);
                 @endforeach

@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
         'update' => 'workshops.update',
         'destroy' => 'workshops.destroy',
     ]);
+    Route::get('propositions/create2/{id}', [PropositionController::class,'create2'])->name('propositions.create2');
     Route::resource('service_requests', ServiceRequestController::class)->names([
         'index' => 'service_requests.index',
         'create' => 'service_requests.create',

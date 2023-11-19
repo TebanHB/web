@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
         $workerRole = Role::findByName('Worker');
         $clientUser = User::create([
             'name' => 'Client User',
-            'email' => 'user@user.com',
+            'email' => 'blumbergesteban@gmail.com',
             'password' => Hash::make('1234'),
         ]);
 

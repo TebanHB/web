@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Proposition;
+use App\Models\ServiceRequest;
+use App\Models\Workshop;
+use App\Notifications\PropositionCreated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PropositionController extends Controller
 {
@@ -17,9 +22,15 @@ class PropositionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    public function create2($id)
+    {
+        $workshop = Workshop::where('user_id', Auth::id())->first();
+        $service_request = ServiceRequest::findOrFail($id);
+        return view('proposition.create', compact('service_request', 'workshop'));
+    }
     public function create()
     {
-        //
+
     }
 
     /**
@@ -27,7 +38,15 @@ class PropositionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $propostion = new Proposition();
+        $propostion->workshop_id = $request->workshop_id;
+        $propostion->service_request_id = $request->service_request_id;
+        $propostion->price = $request->price;
+        $propostion->save();
+
+        $user = ServiceRequest::find($request->service_request_id)->client->user;
+        $user->notify(new PropositionCreated());
+        $user->session()->flash('message', 'Notification sent!');
     }
 
     /**

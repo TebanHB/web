@@ -18,7 +18,7 @@ class ServiceRequestController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if ($user->client->exists()) {
+        if ($user->client && $user->client->exists()) {
             $client = $user->client;
             $serviceRequests = ServiceRequest::where('client_id', $client->id)->where('status', 'pending')->with('photos')->get();
             return view('service_requests.index', compact('serviceRequests'));
