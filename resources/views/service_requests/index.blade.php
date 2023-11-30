@@ -19,12 +19,13 @@
                 @foreach ($serviceRequests as $serviceRequest)
                     <tr>
                         <td>
-                            <a href="#" class="btn btn-primary" data-toggle="modal"
-                                data-target="#photosModal{{ $serviceRequest->id }}">
-                                Show Photos
-                            </a>
+                            @foreach ($serviceRequest->photos as $photo)
+                            <img src="{{ asset('storage/' . $photo->file_path) }}" alt="Photo" style="width: 150px; height: 150px; object-fit: cover;">
+                            @endforeach
                             <br><br>
-                            <a href="javascript:void(0);" onclick="window.open('{{ route('propositions.create2', ['id' => $serviceRequest->id]) }}', 'newwindow', 'width=300,height=250');" class="btn btn-primary">
+                            <a href="javascript:void(0);"
+                                onclick="window.open('{{ route('propositions.create2', ['id' => $serviceRequest->id]) }}', 'newwindow', 'width=300,height=250');"
+                                class="btn btn-primary">
                                 Make a offer
                             </a>
                         </td>
