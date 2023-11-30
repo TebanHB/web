@@ -6,8 +6,10 @@ use App\Models\Proposition;
 use App\Models\ServiceRequest;
 use App\Models\Workshop;
 use App\Notifications\PropositionCreated;
+use Kreait\Firebase\Messaging\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Kreait\Firebase\Messaging\CloudMessage;
 
 class PropositionController extends Controller
 {
@@ -30,7 +32,6 @@ class PropositionController extends Controller
     }
     public function create()
     {
-
     }
 
     /**
@@ -45,8 +46,17 @@ class PropositionController extends Controller
         $propostion->save();
 
         $user = ServiceRequest::find($request->service_request_id)->client->user;
-        $user->notify(new PropositionCreated());
-        $user->session()->flash('message', 'Notification sent!');
+//        $user->notify(new PropositionCreated());
+//        $user->session()->flash('message', 'Notification sent!');
+
+        $messaging = app('firebase.messaging');
+        $notification = Notification::create("Nueva Oferta Recibida", "Has recibido una oferta");
+        if($user->tokenf != null){
+            $message = CloudMessage::withTarget('token', $user->tokenf)
+            ->withNotification(Notification::fromArray(['title' => 'New Proposition', 'body' => 'A new proposition has been created'])) // optional
+            ->withData(['key' => 'value']); // optional
+        $messaging->send($message);
+        }
     }
 
     /**
