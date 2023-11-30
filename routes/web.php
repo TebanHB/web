@@ -9,6 +9,7 @@ use App\Http\Controllers\WorkerController;
 use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +70,11 @@ Route::middleware(['auth'])->group(function () {
         'update' => 'workshops.update',
         'destroy' => 'workshops.destroy',
     ]);
+
+    Route::get('/user-test', [AuthController::class, 'getUserByToken'])->middleware('auth');
+
+
+
     Route::get('propositions/create2/{id}', [PropositionController::class,'create2'])->name('propositions.create2');
     Route::resource('service_requests', ServiceRequestController::class)->names([
         'index' => 'service_requests.index',

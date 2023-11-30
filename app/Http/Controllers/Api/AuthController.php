@@ -66,8 +66,21 @@ class AuthController extends Controller
     }
   public function getUserByToken(Request $request){
     $user = Auth::user();
-    $client = $user->client;
-    $service_request = $client->serviceRequest;
-    return $service_request;
+    $client = $user->client->with('serviceRequests')->first();
+    $service_request = ServiceRequest::Where('client_id', $client->id)->with('propositions')->get();
+    $propositions = $service_request->flatMap->propositions;
+    return $propositions;
   }
+  public function getPropositions(Request $request){
+    $user = Auth::user();
+    if ($user->client) {
+    $client = $user->client->with('serviceRequests')->first();
+    $service_request = ServiceRequest::Where('client_id', $client->id)->with('propositions.workshop.user')->get();
+    $propositions = $service_request->flatMap->propositions;
+    return response()->json($propositions);
+    } else {
+        return response()->json(['error' => 'User does not have a client'], 404);
+    }
+  }
+  
 }

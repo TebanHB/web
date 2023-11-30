@@ -33,7 +33,8 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        @can('Workshop')
+                            @if (Auth::check())
+                                @if (Auth::user()->hasRole('Workshop'))
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -41,32 +42,40 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('workers.create') }}">Create</a>
-                                    <a class="dropdown-item" href="/workers/edit">Edit</a>
                                     <a class="dropdown-item" href="/workers">View All</a>
                                 </div>
                             </li>
-                        @endcan
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Vehicles
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('vehicles.create') }}">Create</a>
-                                <a class="dropdown-item" href="/vehicles/edit">Edit</a>
-                                <a class="dropdown-item" href="/vehicles">View All</a>
-                            </div>
-                        </li>
+                                @endif
+                            @endif
+                            
+                            @if (Auth::check())
+                                @if (Auth::user()->hasRole('Client'))
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Vehicles
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('vehicles.create') }}">Create</a>
+                                    <a class="dropdown-item" href="/vehicles">View All</a>
+                                </div>
+                            </li>
+                                @endif
+                            @endif
+                        @if (Auth::check())
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 Servicios
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                @if (Auth::user()->hasRole('Client'))
                                 <a class="dropdown-item" href="{{ route('service_requests.create') }}">Create</a>
+                                @endif
                                 <a class="dropdown-item" href="{{ route('service_requests.index') }}">View All</a>
                             </div>
                         </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -112,8 +121,7 @@
                                         {{ __('Logout') }}
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                        class="d-none">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>

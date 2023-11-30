@@ -53,7 +53,9 @@
     </div>
     <script>
         document.getElementById('form').addEventListener('submit', function() {
-            window.close();
+            setTimeout(function() {
+                window.close();
+            }, 500);
         });
     </script>
 </body>
